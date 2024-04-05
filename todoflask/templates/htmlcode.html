@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+6JHA5oW8WfLg7zla5W+5e2RSf5B+dAFezB47t5f5MDaPnF" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #cfd8dc; /* Light greyish blue */
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .table {
+            width: 100%;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table th, .table td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        /* Customize the background color for table rows */
+        .table tbody tr.to-complete {
+            background-color: #ffcccc; /* Light Baby Pink for "To Complete" rows */
+        }
+
+        .table tbody tr.completed {
+            background-color: #b5e2e2; /* Light Sky Blue for "Completed" rows */
+        }
+
+        .btn-group {
+            margin-left: 10px;
+        }
+
+        .btn-success {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-group > .btn {
+            margin-left: 5px;
+        }
+
+        .no-tasks-message {
+            text-align: center;
+            color: #6c757d;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="mb-4">To-Do List</h1>
+    <form action="/add" method="post" class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" name="name" placeholder="Enter a new task" required>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+    </form>
+
+    <h3>TASK TO DO:</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Task</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if todo_list|length == 0 %}
+                <tr>
+                    <td colspan="3" class="no-tasks-message">Add your task</td>
+                </tr>
+            {% else %}
+                {% for todo in todo_list if not todo.done %}
+                    <tr class="to-complete">
+                        <td>{{ todo.task_id }}</td>
+                        <td>{{ todo.name }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/update/{{ todo.task_id }}" class="btn btn-success">Complete</a>
+                                <a href="/delete/{{ todo.task_id }}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+    <h3>COMPLETED TASK:</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Task</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if todo_list|length == 0 %}
+                <tr>
+                    <td colspan="3" class="no-tasks-message">No task completed</td>
+                </tr>
+            {% else %}
+                {% for todo in todo_list if todo.done %}
+                    <tr class="completed">
+                        <td>{{ todo.task_id }}</td>
+                        <td>{{ todo.name }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/update/{{ todo.task_id }}" class="btn btn-success">Mark Incomplete</a>
+                                <a href="/delete/{{ todo.task_id }}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
