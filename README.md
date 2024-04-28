@@ -1,1 +1,0 @@
--Developed a dynamic to-do list web application using Python, Flask, SQL Alchemy, and SQLite. -Implemented CRUD functionalities for efficient task management. -Designed an intuitive user interface for improved usability
